@@ -2,9 +2,9 @@
 
 namespace Models;
 
-require 'Models/Traits/Builder.php';
+require 'Traits/Builder.php';
 
-use Models\Traits\Builder;
+use Traits\Builder;
 
 class Gato
 {

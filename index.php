@@ -4,7 +4,7 @@ require 'Models/Gato.php';
 use Models\Gato;
 
 $gato = Gato::builder()
-  ->nome('Gato')
+  ->nome('Miau')
   ->idade(5)
   ->cor('Preto')
   ->raca('Persa')
