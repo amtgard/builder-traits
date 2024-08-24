@@ -3,7 +3,7 @@
 Implements a Lombokish version of Builder using Traits.
 
 Supports the following traits individually:
-- Builder
+- Builderå
 - Getter
 - Setter
 - ToBuilder
