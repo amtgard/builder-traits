@@ -1,12 +1,11 @@
 # Builder Trait
 
-- The implementation of the Builder pattern is inside the Traits folder;
-- The rest of the files is just for an axample of how to use;
+Implements a Lombokish version of Builder using Traits.
 
----
+Supports the following traits individually:
+- Builder
+- Getter
+- Setter
+- ToBuilder
 
-- To Execute the code run on your terminal:
-
-```bash
-  php index.php
-```
+Example usage is in `tests/Models/Gato.php` and `tests/BuilderTest.php`.

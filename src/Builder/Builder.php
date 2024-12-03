@@ -1,6 +1,8 @@
 <?php
 
-namespace Traits;
+namespace Amtgard\Traits\Builder;
+
+use ReflectionClass;
 
 trait Builder
 {
@@ -19,27 +21,21 @@ trait Builder
       public function __call($name, $arguments)
       {
         if (property_exists($this->instance, $name)) {
-          $this->instance->$name = $arguments[0];
+            $reflection = new ReflectionClass($this->instance);
+            $property = $reflection->getProperty($name);
+            $property->setAccessible(true);
+            $property->setValue($this->instance, $arguments[0]);
+            $property->setAccessible(false);
         } else {
           throw new \Exception("Property {$name} does not exist in class" . get_class($this->instance));
         }
         return $this;
       }
 
-
       public function build()
       {
         return $this->instance;
       }
     };
-  }
-
-  public function __set($name, $value)
-  {
-    if (property_exists($this, $name)) {
-      $this->$name = $value;
-    } else {
-      throw new \Exception("Property {$name} does not exist");
-    }
   }
 }

@@ -2,15 +2,19 @@
 
 namespace Models;
 
-require 'Traits/Builder.php';
-
-use Traits\Builder;
+use Amtgard\Traits\Builder\Builder;
+use Amtgard\Traits\Builder\Setter;
+use Amtgard\Traits\Builder\ToBuilder;
+use Amtgard\Traits\Builder\Getter;
 
 class Gato
 {
   use Builder;
+  use ToBuilder;
+  use Getter;
+  use Setter;
 
-  protected string $nome;
+  private string $nome;
   protected int $idade;
   protected string $cor;
   protected string $raca;
