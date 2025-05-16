@@ -3,21 +3,19 @@
 namespace Models;
 
 use Amtgard\Traits\Builder\Builder;
-use Amtgard\Traits\Builder\Setter;
+use Amtgard\Traits\Builder\Data;
 use Amtgard\Traits\Builder\ToBuilder;
-use Amtgard\Traits\Builder\Getter;
 
 class Gato
 {
   use Builder;
   use ToBuilder;
-  use Getter;
-  use Setter;
+  use Data;
 
   private string $nome;
-  protected int $idade;
-  protected string $cor;
-  protected string $raca;
+  protected ?int $idade = null;
+  protected ?string $cor = null;
+  protected ?string $raca = null;
 
   public function __toString()
   {

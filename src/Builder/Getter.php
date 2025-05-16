@@ -3,12 +3,15 @@
 namespace Amtgard\Traits\Builder;
 
 trait Getter {
-    public function __get($name)
-    {
-        if (property_exists($this, $name)) {
+    use _Getter, _NameExtractor;
+
+    public function __call($getCall, $arguments) {
+        if (str_starts_with($getCall, "get")) {
+            $name = $this->_extractName($getCall);
             return $this->$name;
-        } else {
-            throw new \Exception("Property {$name} does not exist");
         }
+        throw new \Exception("Property {$name} does not exist in class" . get_class($this));
     }
+
+
 }

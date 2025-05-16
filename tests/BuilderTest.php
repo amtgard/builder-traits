@@ -1,13 +1,17 @@
 <?php
 require 'Models/Gato.php';
+require 'Models/Penguin.php';
+require 'Models/Wombat.php';
 
 use PHPUnit\Framework\TestCase;
 use Models\Gato;
-use function PHPUnit\Framework\assertEquals;
+use Models\Penguin;
+use Models\Wombat;
 
 class BuilderTest extends TestCase {
 
     private Gato $gato;
+    private Penguin $penguin;
 
     public function setUp(): void
     {
@@ -23,12 +27,12 @@ class BuilderTest extends TestCase {
     }
 
     public function testSetter() {
-        $this->gato->nome('Siau');
+        $this->gato->setNome('Siau');
         self::assertEquals("Models\Gato Object\n(\n    [nome:Models\Gato:private] => Siau\n    [idade:protected] => 5\n    [cor:protected] => Preto\n    [raca:protected] => Persa\n)\n", print_r($this->gato, true));
     }
 
     public function testGetter() {
-        self::assertEquals("Miau", $this->gato->nome);
+        self::assertEquals("Miau", $this->gato->getNome());
     }
 
     public function testToBuilder() {
@@ -36,6 +40,25 @@ class BuilderTest extends TestCase {
         $nekoBuilder->nome('Niau');
         $neko = $nekoBuilder->build();
         self::assertEquals("Models\Gato Object\n(\n    [nome:Models\Gato:private] => Niau\n    [idade:protected] => 5\n    [cor:protected] => Preto\n    [raca:protected] => Persa\n)\n", print_r($neko, true));
+    }
+
+    public function testToBuilderDoesNotMutate() {
+        $neko = Gato::builder()->nome('Charlie')->build();
+        $chuck = $neko->toBuilder()->nome('Chuck')->build();
+        self::assertNotEquals(print_r($neko, true), print_r($chuck, true));
+        self::assertEquals('Charlie', $neko->getNome());
+        self::assertEquals('Chuck', $chuck->getNome());
+    }
+
+    public function testGetPenguinName() {
+        $this->penguin = Penguin::builder()->name("Sam")->build();
+        self::assertEquals("Sam", $this->penguin->getName());
+    }
+
+    public function testSetWombatAge() {
+        $wombat = Wombat::builder()->age(3)->build();
+        $wombat->setAge(5);
+        self::assertEquals(5, $wombat->getAge());
     }
 }
 
