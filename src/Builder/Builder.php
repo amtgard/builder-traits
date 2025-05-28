@@ -2,7 +2,9 @@
 
 namespace Amtgard\Traits\Builder;
 
+use Optional\Optional;
 use ReflectionClass;
+use function PHPUnit\Framework\isNull;
 
 trait Builder
 {
@@ -13,10 +15,23 @@ trait Builder
     return new class($className) {
       private $instance;
 
-      public function __construct($className)
-      {
-        $this->instance = new $className();
-      }
+        public function __construct($className)
+        {
+            $class = new ReflectionClass($className);
+            $constructor = $class->getConstructor();
+            $self = $this;
+            Optional::ofNullable($constructor)
+                ->map(function() use ($class, $constructor, $self) {
+                    $constructor->setAccessible(true);
+                    $self->instance = $class->newInstanceWithoutConstructor();
+                    $constructor->invoke($self->instance, 1);
+                    return $self->instance;
+                })
+                ->orElseGet(function() use ($className, $self) {
+                    $self->instance = new $className();
+                    return $self->instance;
+                });
+        }
 
       public function __call($name, $arguments)
       {

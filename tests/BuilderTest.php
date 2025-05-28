@@ -1,14 +1,18 @@
 <?php
 require 'Models/Gato.php';
+require 'Models/PrivateGato.php';
 require 'Models/Penguin.php';
 require 'Models/Wombat.php';
 
-use PHPUnit\Framework\TestCase;
+require "../vendor/autoload.php";
+
+use Amtgard\PHPUnit\AmtgardTestCase;
 use Models\Gato;
 use Models\Penguin;
 use Models\Wombat;
+use Models\PrivateGato;
 
-class BuilderTest extends TestCase {
+class BuilderTest extends AmtgardTestCase {
 
     private Gato $gato;
     private Penguin $penguin;
@@ -59,6 +63,13 @@ class BuilderTest extends TestCase {
         $wombat = Wombat::builder()->age(3)->build();
         $wombat->setAge(5);
         self::assertEquals(5, $wombat->getAge());
+    }
+
+    public function testPrivateGatoDoesNotThrow() {
+        self::assertDoesNotThrow(function() {
+            $private = PrivateGato::builder()->aField('a')->build();
+            self::assertEquals('a', $private->getAField());
+        });
     }
 }
 
