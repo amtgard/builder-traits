@@ -4,6 +4,8 @@ namespace Models;
 
 use Amtgard\Traits\Builder\Builder;
 use Amtgard\Traits\Builder\Getter;
+use Amtgard\Traits\Builder\PostInit;
+use Amtgard\Traits\Builder\FalseFlagAttribute;
 
 class PrivateGato
 {
@@ -13,4 +15,14 @@ class PrivateGato
     private $bField;
 
     private function __construct() { }
+
+    #[FalseFlagAttribute]
+    private function notAPostInit() {
+        $this->aField = 'a';
+    }
+
+    #[PostInit]
+    private function postInit() {
+        $this->bField = 'b';
+    }
 }

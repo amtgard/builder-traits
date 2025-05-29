@@ -72,3 +72,8 @@ class Gato {
 }
 $chuck = $gato->toBuilder()->name('Charlie')->build();
 ```
+
+### Hooks
+
+#### #[PostInit] Attribute
+Apply the `#[PostInit]` attribute to any private method to be called during the `->build()` phase of the Builder.

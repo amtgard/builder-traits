@@ -71,5 +71,11 @@ class BuilderTest extends AmtgardTestCase {
             self::assertEquals('a', $private->getAField());
         });
     }
+
+    public function testPostInitIsCalledOnBuild() {
+        $private = PrivateGato::builder()->build();
+        self::assertEquals('b', $private->getBField());
+        self::assertNull($private->getAField());
+    }
 }
 
