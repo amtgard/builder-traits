@@ -23,7 +23,7 @@ trait Builder
                     ->map(function() use ($class, $constructor, $self) {
                         $constructor->setAccessible(true);
                         $self->instance = $class->newInstanceWithoutConstructor();
-                        $constructor->invoke($self->instance, 1);
+                        $constructor->invoke($self->instance);
                         return $self->instance;
                     })
                     ->orElseGet(function() use ($className, $self) {
