@@ -77,3 +77,15 @@ $chuck = $gato->toBuilder()->name('Charlie')->build();
 
 #### #[PostInit] Attribute
 Apply the `#[PostInit]` attribute to any private method to be called during the `->build()` phase of the Builder.
+
+```php
+class PostInitGato {
+    use Builder;
+    private $bField;
+
+    #[PostInit]
+    private function postInit() {
+        $this->bField = 'b';
+    }
+}
+```
