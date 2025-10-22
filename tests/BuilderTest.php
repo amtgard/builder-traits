@@ -1,5 +1,8 @@
 <?php
 require 'Models/Gato.php';
+require 'Models/GatoDataHandler.php';
+require 'Models/GatoGetHandler.php';
+require 'Models/GatoSetHandler.php';
 require 'Models/PrivateGato.php';
 require 'Models/Penguin.php';
 require 'Models/Wombat.php';
@@ -8,6 +11,9 @@ require "../vendor/autoload.php";
 
 use Amtgard\PHPUnit\AmtgardTestCase;
 use Models\Gato;
+use Models\GatoDataHandler;
+use Models\GatoGetHandler;
+use Models\GatoSetHandler;
 use Models\Penguin;
 use Models\Wombat;
 use Models\PrivateGato;
@@ -76,6 +82,47 @@ class BuilderTest extends AmtgardTestCase {
         $private = PrivateGato::builder()->build();
         self::assertEquals('b', $private->getBField());
         self::assertNull($private->getAField());
+    }
+
+    public function testOnSetIsCalledOnSet_forDataTrait() {
+        $private = GatoDataHandler::builder()->build();
+        $private->setAField('c');
+        self::assertEquals('c', $private->getAField());
+        self::assertEquals('c', $private->getOnSetField());
+    }
+
+    public function testOnGetIsCalledOnGet_forDataTrait() {
+        $private = GatoDataHandler::builder()->build();
+        $private->setAField('c');
+        $private->getAField();
+        self::assertEquals('c', $private->getAField());
+        self::assertEquals('side-effect', $private->getOnGetField());
+    }
+
+    public function testOnSetIsCalledOnSet_forSetTrait_withSetter() {
+        $private = GatoSetHandler::builder()->build();
+        $private->setAField('d');
+        self::assertEquals('d', $private->getAField());
+        self::assertEquals('d', $private->getOnSetField());
+    }
+
+    public function testOnSetIsCalledOnSet_forSetTrait_withMagicSet() {
+        $private = GatoSetHandler::builder()->build();
+        $private->aField = 'c';
+        self::assertEquals('c', $private->getAField());
+        self::assertEquals('c', $private->getOnSetField());
+    }
+
+    public function testOnGetIsCalledOnGet_forGetTrait_withGetter() {
+        $private =  GatoGetHandler::builder()->build();
+        $v = $private->getAField();
+        self::assertEquals('side-effect', $private->getOnGetField());
+    }
+
+    public function testOnGetIsCalledOnGet_forGetTrait_withMagicGet() {
+        $private =  GatoGetHandler::builder()->build();
+        $v = $private->aField;
+        self::assertEquals('side-effect', $private->getOnGetField());
     }
 }
 

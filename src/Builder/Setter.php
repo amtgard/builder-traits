@@ -11,9 +11,10 @@ trait Setter {
     {
         if (str_starts_with($setCall, "set")) {
             $name = $this->_extractName($setCall);
-            $this->$name = $arguments[0];
+            $value = $this->__handleCall($this, OnSet::class, $name, $arguments[0]);
+            $this->$name = $value;
             return;
         }
-        throw new \Exception("Property {$name} does not exist in class" . get_class($this));
+        throw new \Exception("Property {$setCall} does not exist in class" . get_class($this));
     }
 }
