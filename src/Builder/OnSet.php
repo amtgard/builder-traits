@@ -1,12 +1,11 @@
 <?php
 
 namespace Amtgard\Traits\Builder;
+
 use Attribute;
 
 #[Attribute(Attribute::TARGET_METHOD)]
-class PostInit
+trait OnSet
 {
-    public function __construct()
-    {
-    }
+
 }

@@ -13,6 +13,7 @@ class PrivateGato
 
     private $aField;
     private $bField;
+    private $onSetField;
 
     private function __construct() { }
 
@@ -25,4 +26,5 @@ class PrivateGato
     private function postInit() {
         $this->bField = 'b';
     }
+
 }
