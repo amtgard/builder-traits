@@ -24,12 +24,26 @@ trait Builder
                         $constructor->setAccessible(true);
                         $self->instance = $class->newInstanceWithoutConstructor();
                         $constructor->invoke($self->instance);
+                        $this->__callPreInit($self->instance);
                         return $self->instance;
                     })
                     ->orElseGet(function() use ($className, $self) {
                         $self->instance = new $className();
+                        $this->__callPreInit($self->instance);
                         return $self->instance;
                     });
+            }
+
+            private function __callPreInit($instance) {
+                $class = new ReflectionClass($instance);
+                foreach ($class->getMethods(\ReflectionMethod::IS_PRIVATE) as $reflectionMethod) {
+                    $attributes =  $reflectionMethod->getAttributes(PreInit::class);
+                    if (count($attributes) == 1) {
+                        $reflectionMethod->setAccessible(true);
+                        $reflectionMethod->invoke($instance);
+                        $reflectionMethod->setAccessible(false);
+                    }
+                }
             }
 
             public function __call($name, $arguments)
