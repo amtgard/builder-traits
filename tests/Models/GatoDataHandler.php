@@ -17,6 +17,7 @@ class GatoDataHandler
     private $aField;
 
     private $id;
+    private $preId;
 
     #[OnSet]
     private function onSet($name, $value) {
@@ -33,5 +34,10 @@ class GatoDataHandler
     #[PostInit]
     private function postInit() {
         $this->id = md5(microtime());
+    }
+
+    #[PreInit]
+    private function preInit() {
+        $this->preId = md5(microtime());
     }
 }

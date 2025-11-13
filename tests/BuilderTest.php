@@ -84,6 +84,17 @@ class BuilderTest extends AmtgardTestCase {
         self::assertNull($private->getAField());
     }
 
+    public function testPreInitIsCalledOnBuilder() {
+        $builder = PrivateGato::builder();
+        $reflection = new \ReflectionObject($builder);
+        $instanceProperty = $reflection->getProperty('instance');
+        $instanceProperty->setAccessible(true); // treat the private property as public for assertions
+        $instance = $instanceProperty->getValue($builder);
+
+        self::assertNotNull($instance);
+        self::assertInstanceOf(PrivateGato::class, $instance);
+    }
+
     public function testOnSetIsCalledOnSet_forDataTrait() {
         $private = GatoDataHandler::builder()->build();
         $private->setAField('c');
