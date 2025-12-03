@@ -36,7 +36,7 @@ trait Builder
 
             private function __callPreInit($instance) {
                 $class = new ReflectionClass($instance);
-                foreach ($class->getMethods(\ReflectionMethod::IS_PRIVATE) as $reflectionMethod) {
+                foreach ($class->getMethods(\ReflectionMethod::IS_PRIVATE | \ReflectionMethod::IS_PROTECTED) as $reflectionMethod) {
                     $attributes =  $reflectionMethod->getAttributes(PreInit::class);
                     if (count($attributes) == 1) {
                         $reflectionMethod->setAccessible(true);
@@ -63,7 +63,7 @@ trait Builder
             public function build()
             {
                 $class = new ReflectionClass($this->instance);
-                foreach ($class->getMethods(\ReflectionMethod::IS_PRIVATE) as $reflectionMethod) {
+                foreach ($class->getMethods(\ReflectionMethod::IS_PRIVATE | \ReflectionMethod::IS_PROTECTED) as $reflectionMethod) {
                     $attributes =  $reflectionMethod->getAttributes(PostInit::class);
                     if (count($attributes) == 1) {
                         $reflectionMethod->setAccessible(true);
